@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Equipe } from 'src/app/models/equipe.model';
 
 
@@ -10,26 +10,34 @@ import { Equipe } from 'src/app/models/equipe.model';
 })
 export class EquipeFormularioComponent implements OnInit {
 
-  formEquipe?: FormGroup;
+  equipe = new Equipe();
+  formEquipe = this.createForm();
 
   constructor() { }
 
   ngOnInit(): void {
-    this.createForm(new Equipe());
+    
+  }
+  onSubmit() {
+    // TODO: Use EventEmitter with form value
+    console.warn(this.formEquipe.value);
   }
 
+  createForm():FormGroup {
+    return new FormGroup({
+      descricao: new FormControl(this.equipe.descricao,  [
+        Validators.required,
+        Validators.minLength(8),
 
-  createForm(equipe: Equipe) {
-    this.formEquipe = new FormGroup({
-      descricao: new FormControl(equipe.descricao),
-      lider: new FormControl(equipe.lider),
-      lider2: new FormControl(equipe.lider_2),
-      lider3: new FormControl(equipe.lider_3),
-      secretario: new FormControl(equipe.secretario)
+      ]),
+      lider: new FormControl(this.equipe.lider),
+      lider2: new FormControl(this.equipe.lider_2),
+      lider3: new FormControl(this.equipe.lider_3),
+      secretario: new FormControl(this.equipe.secretario)
    
     })
   }
-
+  get descricao() { return this.formEquipe.get('descricao')!; }
 
 
 
